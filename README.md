@@ -167,14 +167,9 @@ MIT license.
 * 3. Q群：593413410
 * 4. 遗留问题见[Github Issues](https://github.com/noodle1983/UnityAndroidIl2cppPatchDemo/issues)
 
-# 9.支持
-
-- 邮件: noodle1983@126.com.
-- Q群：593413410（广告免扰）
-
-# 10.随缘
-
-[PayPal:https://www.paypal.me/noodle1983](https://www.paypal.me/noodle1983)
-
-Or Alipay:![avatar](https://raw.githubusercontent.com/noodle1983/private/master/qr_icon/noodle1983_ali.png)
-Or Wechat:![avatar](https://raw.githubusercontent.com/noodle1983/private/master/qr_icon/noodle1983_wx.png)
+### ###################################################################################
+# 以下是本次fork修改的内容：
+## a. 修复覆盖安装后可能闪退的问题
+## b. 支持aab热更
+* 1. 设置enableuncompressednativelibs=false。在BundletoolHelper.cs中，设置config.optimizations.uncompressNativeLibraries.enable = false。
+* 2. 打aab包时，asset/bin目录不能放在资产包里，必须放在base包里。
