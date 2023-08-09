@@ -847,7 +847,9 @@ namespace Google.Android.AppBundle.Editor.Internal.BuildTools
 
             var splitBaseDestination = GetDestinationSubdirectory(splitBaseDirectory);
             var splitBaseAssetsPath = Path.Combine(splitBaseDestination.FullName, AssetsDirectoryName);
-            baseAssetsDirectories[0].MoveTo(splitBaseAssetsPath);
+            //baseAssetsDirectories[0].MoveTo(splitBaseAssetsPath);
+            //bin/data目录不能移到asset资产包，否则so热更将失败
+            BaseModuleMoveToSplitBaseModule(baseAssetsDirectories[0], splitBaseAssetsPath);
 
             // IL2CPP build crash unless the assets/bin/Data/Managed folder exists in the base apk.
             // Create an empty file in that folder to ensure that folder is present.
@@ -856,6 +858,26 @@ namespace Google.Android.AppBundle.Editor.Internal.BuildTools
             File.Create(Path.Combine(requiredDirInfo.FullName, ".keep_folder")).Close();
 
             return null;
+        }
+
+        //将资源移到base-asset资产包
+        private void BaseModuleMoveToSplitBaseModule(DirectoryInfo baseDirectory, string splitBaseDirectory)
+        {
+            DirectoryInfo[] subdirs = baseDirectory.GetDirectories("*", SearchOption.TopDirectoryOnly);
+            Directory.CreateDirectory(splitBaseDirectory);
+            foreach(var subdir in subdirs)
+            {
+                if (subdir.Name == "bin" || subdir.Name == "." || subdir.Name == "..")
+                    continue;
+
+                string destpath = Path.Combine(splitBaseDirectory, subdir.Name);
+                if (Directory.Exists(destpath))
+                {
+                    Directory.Delete(destpath, true);
+                }
+
+                subdir.MoveTo(destpath);
+            }
         }
 
         // Don't support certain versions of Unity due to the "Failed to load 'libmain.so'" crash.

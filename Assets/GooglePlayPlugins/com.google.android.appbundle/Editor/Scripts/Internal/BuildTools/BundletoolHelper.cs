@@ -115,7 +115,9 @@ namespace Google.Android.AppBundle.Editor.Internal.BuildTools
 
             // APK download size is smaller when native libraries are uncompressed. uncompressNativeLibraries sets
             // android:extractNativeLibs="false" in the manifest, which also reduces on-disk for Android 6.0+ devices.
-            config.optimizations.uncompressNativeLibraries.enabled = true;
+            //config.optimizations.uncompressNativeLibraries.enabled = true;
+            //aap热更so需要关掉这个优化
+            config.optimizations.uncompressNativeLibraries.enabled = false;
             config.compression.uncompressedGlob.AddRange(UnityUncompressedGlob);
 
             var compressionOptions = configParams.compressionOptions;
